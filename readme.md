@@ -2,12 +2,12 @@
 
 Make choice of the best thing easier with the Single bracket 64-image torunement. 
 
-It should even work with not even number of images. Works on any platfrom, Windows, Linux, macOS
+It should even work with not even number of images. Works on any platfrom: Windows, Linux, macOS
 
 ## Story
-I needed to make choices for the tens of Geneative art images I was creating. And I came up with an idea to just run a torunament between all of the images. 
+I needed to choose between hundreds of Geneative art images I was creating. And I came up with an idea to just run a torunament between all of the images. 
 
-You can play such a fun Friendship-breaking games like: "Best meme of 2020s" or "Who is the best actor?". Just run it localy on your machine, light up TV or a projector and invite friends over. 
+Now you can play such a fun Friendship-breaking games like: "Best meme of 2020s" or "Who is the best actor?". Just run it localy on your machine, light up TV or a projector and invite friends over. 
 
 ## How to run it locally?
 1. Download the code
