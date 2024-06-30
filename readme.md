@@ -11,11 +11,11 @@ Now you can play such a fun Friendship-breaking games like: "Best meme of 2020s"
 
 ## How to run it locally?
 1. Download the code
-2. Have about 64 images(maybe mor maybe less) and put them into the "/images" folder
+2. Have about 64 images(maybe more, maybe less) and put them into the "/images" folder
 3. Use [MAMP](https://www.mamp.info/en/downloads/)(free version on their website) or use Python or Node.js server
 
-## hos to run it on the website
-1. RDonwload code to the Virtual machine
+## How to run it on the website
+1. Download code to the virtual machine
 2. Run server on the virtual machine
 3. Configure your server somehow...
 
