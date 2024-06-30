@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choice Tournament</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+        }
+        .image-box {
+            text-align: center;
+        }
+        img {
+            max-width: 300px;
+            max-height: 300px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Choice single bracket Tournament</h1>
+    <div id="round-info"></div>
+    <div class="image-container">
+        <div class="image-box">
+            <img id="image1" src="" alt="Image 1">
+            <p id="filename1"></p>
+        </div>
+        <div class="image-box">
+            <img id="image2" src="" alt="Image 2">
+            <p id="filename2"></p>
+        </div>
+    </div>
+
+    <script>
+        let images = [];
+        let currentRound = [];
+        let currentPair = 0;
+        let rounds = [64, 32, 16, 8, 4, 2, 1];
+        let currentRoundIndex = 0;
+
+        async function loadImages() {
+            const folderPath = 'images/'; // The folder where your images are stored
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Add or remove extensions as needed
+            
+            try {
+                // Fetch the list of files in the directory
+                const response = await fetch(folderPath);
+                const data = await response.text();
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(data, 'text/html');
+                
+                // Get all the links in the directory listing
+                const links = htmlDoc.getElementsByTagName('a');
+                
+                for (let link of links) {
+                    const fileName = link.href.split('/').pop();
+                    const fileExtension = fileName.split('.').pop().toLowerCase();
+                    
+                    // Check if the file has an image extension
+                    if (imageExtensions.includes(fileExtension)) {
+                        images.push(folderPath + fileName);
+                    }
+                }
+                
+                console.log(`Loaded ${images.length} images`);
+                
+                // Start the tournament if we have enough images
+                if (images.length >= 2) {
+                    createPairs();
+                    displayPair();
+                } else {
+                    alert('Not enough images found. Please add more images to the folder.');
+                }
+            } catch (error) {
+                console.error('Error loading images:', error);
+                alert('Error loading images. Please check the console for details.');
+            }
+        }
+
+        function createPairs() {
+            currentRound = [];
+            let availableImages = [...images]; // Create a copy of the images array
+            let pairCount = Math.floor(availableImages.length / 2);
+            
+            for (let i = 0; i < pairCount; i++) {
+                let index1 = Math.floor(Math.random() * availableImages.length);
+                let image1 = availableImages.splice(index1, 1)[0];
+                
+                let index2 = Math.floor(Math.random() * availableImages.length);
+                let image2 = availableImages.splice(index2, 1)[0];
+                
+                currentRound.push([image1, image2]);
+            }
+            
+            // If there's an odd number of images, add the last one to the next round
+            if (availableImages.length > 0) {
+                images = availableImages;
+            } else {
+                images = [];
+            }
+        }
+
+        function displayPair() {
+            document.getElementById('image1').src = currentRound[currentPair][0];
+            document.getElementById('image2').src = currentRound[currentPair][1];
+            document.getElementById('filename1').textContent = currentRound[currentPair][0];
+            document.getElementById('filename2').textContent = currentRound[currentPair][1];
+            document.getElementById('round-info').textContent = `Round: ${currentRoundIndex + 1}/${rounds.length} - Pair: ${currentPair + 1}/${rounds[currentRoundIndex]/2}`;
+        }
+
+        function selectWinner(index) {
+            images.push(currentRound[currentPair][index]);
+            currentPair++;
+            if (currentPair >= currentRound.length) {
+                currentRoundIndex++;
+                if (currentRoundIndex >= rounds.length) {
+                    alert("Tournament finished! Winner: " + images[0]);
+                    return;
+                }
+                createPairs();
+                currentPair = 0;
+            }
+            displayPair();
+        }
+
+        document.getElementById('image1').addEventListener('click', () => selectWinner(0));
+        document.getElementById('image2').addEventListener('click', () => selectWinner(1));
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            loadImages();
+        });
+        createPairs();
+        displayPair();
+    </script>
+</body>
+</html>
